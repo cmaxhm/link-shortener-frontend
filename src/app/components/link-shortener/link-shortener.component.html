@@ -1,0 +1,22 @@
+<div class="link-shortener-wrapper">
+  <form [formGroup]="form" (ngSubmit)="sendForm()">
+    <img src="assets/img/scissors.png" alt="Link Shortener">
+    <h1>Link Shortener</h1>
+    <p>Paste your link here and press <i>Enter</i>:</p>
+    <div>
+      <div class="p-input-icon-right link-input-wrapper">
+        <input #linkInput pInputText formControlName="link" type="text" class="p-inputtext-lg link-input">
+        <i class="pi pi-spin pi-spinner" *ngIf="form.valid && isSent"></i>
+      </div>
+    </div>
+  </form>
+  <div class="link-result-success-wrapper">
+    <div class="link-result-success" *ngIf="linkShortened" (click)="copyShortenedLink()">
+      {{ linkShortened }}
+    </div>
+  </div>
+  <div class="link-result-error" *ngIf="form.invalid && isSent">
+    Invalid link. Please check and try again.
+  </div>
+</div>
+
