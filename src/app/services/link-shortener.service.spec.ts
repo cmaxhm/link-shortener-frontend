@@ -1,20 +1,23 @@
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { TestBed } from '@angular/core/testing';
-import { of } from "rxjs";
-import { Link } from "../interfaces/link";
+import { environment } from "../../environments/environment.dev";
+import { ResponseLink } from "../interfaces/link.interface";
 
 import { LinkShortenerService } from './link-shortener.service';
 
 describe('LinkShortenerService', () => {
   let service: LinkShortenerService;
+  let controller: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule
-      ]
+      ],
+      providers: [LinkShortenerService]
     });
     service = TestBed.inject(LinkShortenerService);
+    controller = TestBed.inject(HttpTestingController);
   });
 
   it('Should be created', () => {
@@ -22,8 +25,21 @@ describe('LinkShortenerService', () => {
   });
 
   it('Should send link to be shortened', () => {
-    service.shortenLink('http://test.com/').subscribe((link: Link) => {
-      expect(link).toBeTruthy();
-    });
+    let testLink: ResponseLink;
+    const responseTestLink: ResponseLink = {
+      _id: 1,
+      uuid: 'testuuid',
+      shortUrlId: 'testshortUrlId',
+      originalUrl: 'testoriginalUrl'
+    };
+
+    service
+      .shortenLink('http://test.com/')
+      .subscribe((link: ResponseLink) => link);
+
+    controller.expectOne(`${environment.apiUrl}/`).flush(responseTestLink);
+    testLink = responseTestLink;
+
+    expect(testLink).toEqual(responseTestLink);
   });
 });

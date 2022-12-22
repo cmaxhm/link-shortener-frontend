@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from '@angular/core';
-import { Observable, of } from "rxjs";
+import { Observable } from "rxjs";
 import { environment } from "../../environments/environment.dev";
-import { Link } from "../interfaces/link";
+import { ResponseLink } from "../interfaces/link.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class LinkShortenerService {
 
   constructor(private httpClient: HttpClient) {}
 
-  shortenLink(link: string): Observable<Link> {
-    return of({ url: '' });
+  shortenLink(link: string): Observable<ResponseLink> {
+    return this.httpClient.post<ResponseLink>(`${ this.apiUrl }/`, { url: link });
   }
 }

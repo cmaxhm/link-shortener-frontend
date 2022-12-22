@@ -3,9 +3,21 @@ import { DebugElement } from "@angular/core";
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from "@angular/forms";
 import { By } from "@angular/platform-browser";
+import { Observable, of } from "rxjs";
+import { ResponseLink } from "../../interfaces/link.interface";
 import { LinkShortenerService } from "../../services/link-shortener.service";
-
 import { LinkShortenerComponent } from './link-shortener.component';
+
+const MockLinkShortenerService: {
+  shortenLink: () => Observable<ResponseLink>
+} = {
+  shortenLink: () => of({
+    _id: 1,
+    uuid: 'testuuid',
+    shortUrlId: 'testshortUrlId',
+    originalUrl: 'testoriginalUrl'
+  })
+};
 
 describe('LinkShortenerComponent', () => {
   let component: LinkShortenerComponent;
@@ -19,7 +31,10 @@ describe('LinkShortenerComponent', () => {
         ReactiveFormsModule
       ],
       providers: [
-        LinkShortenerService
+        {
+          provide: LinkShortenerService,
+          useValue: MockLinkShortenerService
+        }
       ]
     })
     .compileComponents();
@@ -52,6 +67,8 @@ describe('LinkShortenerComponent', () => {
 
   it('Should enable link input', () => {
     component.form.setValue({ link: 'https://test.com/'});
+    component.sendForm();
     fixture.detectChanges();
+    expect(component.form.value.link).toBeTruthy();
   });
 });

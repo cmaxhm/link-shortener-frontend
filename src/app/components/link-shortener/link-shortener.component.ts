@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Link } from "../../interfaces/link";
+import { environment } from "../../../environments/environment.dev";
+import { ResponseLink } from "../../interfaces/link.interface";
 import { LinkShortenerService } from "../../services/link-shortener.service";
 
 @Component({
@@ -53,10 +54,12 @@ export class LinkShortenerComponent {
     if (this.form.valid) {
       this.disableLinkInput();
 
-      this.linkShortenerService.shortenLink(linkValue).subscribe((link: Link) => {
-        this.linkShortened = link.url;
-        this.enableLinkInput();
-      });
+      this.linkShortenerService
+        .shortenLink(linkValue)
+        .subscribe((link: ResponseLink) => {
+          this.linkShortened = `${environment.apiUrl}/${link.shortUrlId}`;
+          this.enableLinkInput();
+        });
     }
   }
 
