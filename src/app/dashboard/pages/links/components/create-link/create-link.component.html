@@ -1,0 +1,6 @@
+<div class="p-inputgroup">
+  <input #linkInput type="text" pInputText placeholder="Insert your link here...">
+  <button pButton (click)="createLink(linkInput.value)">Create link</button>
+</div>
+
+<p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>

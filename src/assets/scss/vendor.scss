@@ -1,0 +1,10 @@
+html,
+body {
+  font-family: 'Nunito', Arial, sans-serif;
+  font-size: $font-size;
+  @apply p-0 m-0 h-full;
+}
+
+.p-button {
+  background: $primary-color;
+}

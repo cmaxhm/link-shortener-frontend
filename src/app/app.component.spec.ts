@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { FormBuilder } from "@angular/forms";
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { LinkShortenerComponent } from "./components/link-shortener/link-shortener.component";
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -12,13 +11,8 @@ describe('AppComponent', () => {
         RouterTestingModule,
         HttpClientTestingModule
       ],
-      declarations: [
-        AppComponent,
-        LinkShortenerComponent
-      ],
-      providers: [
-        FormBuilder
-      ]
+      declarations: [AppComponent],
+      providers: [FormBuilder]
     }).compileComponents();
   });
 

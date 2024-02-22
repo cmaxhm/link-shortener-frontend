@@ -1,0 +1,42 @@
+<h2 class="text-3xl mb-5">Create link</h2>
+<app-create-link (linkCreated)="getLinks()"></app-create-link>
+
+<h2 class="text-3xl my-5">Links</h2>
+<p-table
+  [value]="links"
+  [paginator]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  [tableStyle]="{ 'min-width': '50rem' }"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  currentPageReportTemplate=""
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th scope="col">URL</th>
+      <th scope="col">Slug</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-link>
+    <tr>
+      <td>
+        <a [href]="link.url" target="_blank" class="hover:underline">{{ link.url }}</a>
+        <i class="inline-block ml-2 pi pi-external-link text-[8px]"></i>
+      </td>
+      <td>
+        <a [href]="environment.apiUrl + '/' + link.slug" target="_blank" class="hover:underline">
+          <span class="rounded-full bg-blue-100 py-1 px-3">{{ link.slug }}</span>
+        </a>
+      </td>
+      <td>
+        <button class="p-button p-button-sm p-button-danger" title="Delete" (click)="deleteLink(link.id)">
+          <i class="pi pi-trash text-[10px]"></i>
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="paginatorleft" let-state>
+    Total: {{ state.totalRecords }} entries
+  </ng-template>
+</p-table>
