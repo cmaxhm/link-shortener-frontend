@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SharedModule } from '../../../../../shared/shared.module';
 import { CreateLinkComponent } from './create-link.component';
 
 describe('CreateLinkComponent', () => {
@@ -6,10 +8,15 @@ describe('CreateLinkComponent', () => {
   let fixture: ComponentFixture<CreateLinkComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ CreateLinkComponent ]
-    })
-    .compileComponents();
+    await TestBed
+      .configureTestingModule({
+        declarations: [CreateLinkComponent],
+        imports: [
+          HttpClientTestingModule,
+          SharedModule
+        ]
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(CreateLinkComponent);
     component = fixture.componentInstance;

@@ -2,14 +2,13 @@ export interface Link {
   id: number;
   url: string;
   slug: string;
-  createdAt: string;
-  updatedAt: string;
-  userId: number;
+  created_at: string;
+  updated_at: string;
   user: {
     id: number;
     username: string;
     email: string;
-    createdAt: string;
-    updatedAt: string;
+    created_at: string;
+    updated_at: string;
   };
 }

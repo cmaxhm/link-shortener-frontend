@@ -2,18 +2,37 @@
   <img src="assets/img/scissors.png" alt="Link Shortener">
   <h2 class="text-3xl my-3">Login</h2>
   <div>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="flex flex-col gap-3">
-        <div class="flex flex-col gap-2">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex justify-center">
+      <div class="flex flex-col gap-3 lg:w-80">
+        <div class="flex flex-col gap-2 w-full">
           <label for="username">Username</label>
           <input type="text" id="username" pInputText formControlName="username">
         </div>
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2 w-full">
           <label for="password">Password</label>
-          <p-password [toggleMask]="true" [feedback]="false" id="password" formControlName="password"></p-password>
+          <p-password
+            styleClass="w-full"
+            inputStyleClass="w-full"
+            id="password"
+            formControlName="password"
+            [toggleMask]="true"
+            [feedback]="false"
+          ></p-password>
         </div>
-        <p-button styleClass="w-full" type="submit" label="Login" [disabled]="form.invalid"></p-button>
+        <p-button
+          styleClass="w-full"
+          type="submit"
+          label="Login"
+          [loading]="loadingLogIn"
+          [disabled]="form.invalid"
+        ></p-button>
       </div>
     </form>
+    <div class="flex flex-col gap-3 mt-3">
+      <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+      <p class="text-center">
+        Don't have an account? <a [routerLink]="['/', 'auth', 'sign-up']" class="text-blue-400 hover:underline">Sign up</a>.
+      </p>
+    </div>
   </div>
 </div>

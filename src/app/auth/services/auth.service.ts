@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
+import { SignUpData } from '../interfaces/sign-up-data.interface';
 import { UserData } from '../interfaces/user-data.interface';
-import { Login } from '../interfaces/login.interface';
+import { LoginData } from '../interfaces/login-data.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,17 @@ export class AuthService {
    *
    * @param loginData The login data.
    */
-  public login(loginData: Login): Observable<UserData> {
+  public loginUser(loginData: LoginData): Observable<UserData> {
     return this.httpClient.post<UserData>(`${ environment.apiUrl }/auth`, loginData);
+  }
+
+  /**
+   * Signs up a user.
+   *
+   * @param signupData The sign-up data.
+   */
+  public signupUser(signupData: SignUpData): Observable<UserData> {
+    return this.httpClient.post<UserData>(`${ environment.apiUrl }/users`, signupData);
   }
 
   /**
@@ -34,7 +44,7 @@ export class AuthService {
   }
 
   /**
-   * Get user ID.
+   * Get user data.
    */
   public getUserData(): UserData | undefined {
     return localStorage.getItem(environment.localStorageUserDataKey)

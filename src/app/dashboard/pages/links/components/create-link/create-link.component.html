@@ -1,6 +1,8 @@
-<div class="p-inputgroup">
-  <input #linkInput type="text" pInputText placeholder="Insert your link here...">
-  <button pButton (click)="createLink(linkInput.value)">Create link</button>
-</div>
+<form [formGroup]="createLinkForm" (ngSubmit)="createLink()">
+  <div class="p-inputgroup">
+    <input type="text" pInputText placeholder="Insert your link here..." formControlName="link">
+    <button pButton [disabled]="createLinkForm.invalid">Create link</button>
+  </div>
+</form>
 
 <p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>

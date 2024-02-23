@@ -44,9 +44,6 @@ export class LinksComponent implements OnInit {
       .subscribe({
         next: (links: Link[]) => {
           this.links = links;
-        },
-        error: () => {
-
         }
       });
   }
@@ -62,9 +59,6 @@ export class LinksComponent implements OnInit {
       .subscribe({
         next: () => {
           this.getLinks();
-        },
-        error: () => {
-
         }
       });
   }

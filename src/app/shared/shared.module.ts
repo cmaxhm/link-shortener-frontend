@@ -19,6 +19,7 @@ import { TableModule } from 'primeng/table';
     MessagesModule
   ],
   exports: [
+    CommonModule,
     ReactiveFormsModule,
     InputTextModule,
     PasswordModule,
