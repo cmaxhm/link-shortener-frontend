@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SharedModule } from '../../../shared/shared.module';
 import { ProfileComponent } from './profile.component';
 
 describe('ProfileComponent', () => {
@@ -7,9 +9,13 @@ describe('ProfileComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProfileComponent ]
+      declarations: [ProfileComponent],
+      imports: [
+        HttpClientTestingModule,
+        SharedModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;

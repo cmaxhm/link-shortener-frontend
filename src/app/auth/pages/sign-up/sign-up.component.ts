@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Message } from 'primeng/api';
+import { CreateUser } from '../../interfaces/create-user.interface';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -36,13 +37,14 @@ export class SignUpComponent {
    * Submit the login form.
    */
   public onSubmit(): void {
-    const signUpData = {
+    const signUpData: CreateUser = {
       username: this.form.value.username.trim(),
       email: this.form.value.email.trim(),
       password: this.form.value.password.trim()
     };
 
-    this.loginService.signupUser(signUpData)
+    this.loginService
+      .signupUser(signUpData)
       .subscribe({
         next: () => {
           this.messages = [

@@ -1,1 +1,46 @@
-<p>profile works!</p>
+<h2 class="text-3xl mb-5">Profile</h2>
+<p-messages [(value)]="messages" [enableService]="false" [closable]="true"></p-messages>
+<div class="lg:w-80">
+  <form [formGroup]="form" (ngSubmit)="editUser()">
+    <div class="flex flex-col gap-3">
+      <div class="flex flex-col gap-2 w-full">
+        <label for="username">Username</label>
+        <input type="text" id="username" pInputText formControlName="username">
+      </div>
+      <div class="flex flex-col gap-2 w-full">
+        <label for="email">Email</label>
+        <input type="text" id="email" pInputText formControlName="email">
+      </div>
+      <div class="flex flex-col gap-2 w-full">
+        <label for="password">Password</label>
+        <p-password
+          styleClass="w-full"
+          inputStyleClass="w-full"
+          id="password"
+          formControlName="password"
+          [toggleMask]="true"
+          [feedback]="false"
+        ></p-password>
+      </div>
+      <div class="flex flex-col gap-2 w-full">
+        <label for="repeat-password">Repeat password</label>
+        <p-password
+          styleClass="w-full"
+          inputStyleClass="w-full"
+          id="repeat-password"
+          formControlName="repeatPassword"
+          [ngClass]="{ 'ng-invalid ng-dirty': form.get('password')?.value !== form.get('repeatPassword')?.value }"
+          [toggleMask]="true"
+          [feedback]="false"
+        ></p-password>
+      </div>
+      <p-button
+        styleClass="w-full"
+        type="submit"
+        label="Edit"
+        [loading]="loadingEditUser"
+        [disabled]="form.invalid || form.get('password')?.value !== form.get('repeatPassword')?.value"
+      ></p-button>
+    </div>
+  </form>
+</div>

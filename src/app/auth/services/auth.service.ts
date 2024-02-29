@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
-import { SignUpData } from '../interfaces/sign-up-data.interface';
+import { CreateUser } from '../interfaces/create-user.interface';
+import { EditUserData } from '../interfaces/edit-user-data.interface';
+import { ModifiedUser } from '../interfaces/modified-user.interface';
 import { UserData } from '../interfaces/user-data.interface';
 import { LoginData } from '../interfaces/login-data.interface';
 
@@ -30,7 +32,7 @@ export class AuthService {
    *
    * @param signupData The sign-up data.
    */
-  public signupUser(signupData: SignUpData): Observable<UserData> {
+  public signupUser(signupData: CreateUser): Observable<UserData> {
     return this.httpClient.post<UserData>(`${ environment.apiUrl }/users`, signupData);
   }
 
@@ -50,6 +52,13 @@ export class AuthService {
     return localStorage.getItem(environment.localStorageUserDataKey)
       ? JSON.parse(localStorage.getItem(environment.localStorageUserDataKey)!)
       : undefined;
+  }
+
+  /**
+   * Get user data.
+   */
+  public editUserData(userData: EditUserData): Observable<ModifiedUser> {
+    return this.httpClient.put<ModifiedUser>(`${ environment.apiUrl }/users/${ userData.id }`, userData);
   }
 
   /**
