@@ -48,6 +48,10 @@ export class CreateLinkComponent {
       url: this.createLinkForm.value.link.trim()
     };
 
+    if (!(createLink.url.startsWith('http://') || createLink.url.startsWith('https://'))) {
+      createLink.url = `http://${ createLink.url }`;
+    }
+
     this.linksService.createLink(createLink).subscribe({
       next: () => {
         this.messages = [

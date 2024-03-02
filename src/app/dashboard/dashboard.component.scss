@@ -1,12 +1,4 @@
 ::ng-deep {
-  .navigation-bar {
-    @apply rounded-none border-0 border-b;
-
-    .p-menuitem-link-active {
-      @apply bg-gray-200;
-    }
-  }
-
   @media screen and (max-width: 960px) {
     .p-menubar-button {
       @apply absolute right-2;

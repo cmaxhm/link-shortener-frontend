@@ -31,9 +31,18 @@
             ],
             "styles": [
               "node_modules/primeicons/primeicons.css",
-              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              {
+                "input": "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
+                "inject": false,
+                "bundleName": "light-theme"
+              },
+              {
+                "input": "node_modules/primeng/resources/themes/lara-dark-blue/theme.css",
+                "inject": false,
+                "bundleName": "dark-theme"
+              }
             ],
             "scripts": []
           },
