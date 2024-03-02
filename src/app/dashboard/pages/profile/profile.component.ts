@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Message } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
 import { EditUserData } from '../../../auth/interfaces/edit-user-data.interface';
 import { AuthService } from '../../../auth/services/auth.service';
 
@@ -9,7 +10,12 @@ import { AuthService } from '../../../auth/services/auth.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
+  /**
+   * The subject to stop the subscriptions.
+   */
+  private unsubscribe$: Subject<void>;
+
   /**
    * The form to update the user's profile.
    */
@@ -31,6 +37,7 @@ export class ProfileComponent implements OnInit {
   ) {
     this.messages = [];
     this.loadingEditUser = false;
+    this.unsubscribe$ = new Subject();
     this.form = this.formBuilder.group({
       username: [''],
       email: ['', Validators.email],
@@ -47,6 +54,14 @@ export class ProfileComponent implements OnInit {
   }
 
   /**
+   * Clean up the subscriptions.
+   */
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  /**
    * Submit the profile form.
    */
   public editUser(): void {
@@ -60,6 +75,7 @@ export class ProfileComponent implements OnInit {
 
     this.authService
       .editUserData(editUser)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (editedUser) => {
           const userData = this.authService.getUserData();

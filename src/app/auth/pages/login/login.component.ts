@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Message } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
 import { UserData } from '../../interfaces/user-data.interface';
 import { AuthService } from '../../services/auth.service';
 
@@ -10,7 +11,12 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
+  /**
+   * The subject to stop the subscriptions.
+   */
+  private unsubscribe$: Subject<void>;
+
   /**
    * Whether the user is currently logging in.
    */
@@ -33,10 +39,19 @@ export class LoginComponent {
   ) {
     this.loadingLogIn = false;
     this.messages = [];
+    this.unsubscribe$ = new Subject();
     this.form = this.formBuilder.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
+  }
+
+  /**
+   * Clean up the subscriptions.
+   */
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   /**
@@ -49,7 +64,9 @@ export class LoginComponent {
       password: this.form.value.password.trim()
     };
 
-    this.loginService.loginUser(loginData)
+    this.loginService
+      .loginUser(loginData)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (response: UserData) => {
           this.loginService.saveUserData(response);

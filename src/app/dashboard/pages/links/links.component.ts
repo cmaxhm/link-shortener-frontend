@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { AuthService } from '../../../auth/services/auth.service';
 import { Link } from './interfaces/link.inteface';
@@ -9,7 +10,12 @@ import { LinksService } from './services/links.service';
   templateUrl: './links.component.html',
   styleUrls: ['./links.component.scss']
 })
-export class LinksComponent implements OnInit {
+export class LinksComponent implements OnInit, OnDestroy {
+  /**
+   * The subject to stop the subscriptions.
+   */
+  private unsubscribe$: Subject<void>;
+
   /**
    * The links for the logged-in user.
    */
@@ -26,6 +32,7 @@ export class LinksComponent implements OnInit {
   ) {
     this.links = [];
     this.environment = environment;
+    this.unsubscribe$ = new Subject();
   }
 
   /**
@@ -36,11 +43,20 @@ export class LinksComponent implements OnInit {
   }
 
   /**
+   * Clean up the subscriptions.
+   */
+  public ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  /**
    * Get the links for the logged-in user.
    */
   public getLinks(): void {
     this.linksService
       .getLinks({ user_id: this.authService.getUserData()?.id })
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (links: Link[]) => {
           this.links = links;
@@ -56,6 +72,7 @@ export class LinksComponent implements OnInit {
   public deleteLink(link: number): void {
     this.linksService
       .deleteLink(link)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: () => {
           this.getLinks();
